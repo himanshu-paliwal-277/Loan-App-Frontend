@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 
 const store = create((set) => ({
   isAuthenticated: false,
+  setIsAuthenticated: (value) => set({ isAuthenticated: value }),
   role: null, // "admin" or "customer"
+  setRole: (value) => set({ role: value }),
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
 

@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Common/Footer";
-import Navbar from "../components/Common/Navbar";
 
 function Home() {
   const navigate = useNavigate();
   return (
     <>
       <div className="bg-gradient-to-t from-blue-400 to-orange-100">
-        <Navbar />
         <div className="flex items-center justify-center w-full h-screen">
           <div className="flex flex-col items-center mb-16 ">
             <h2 className="text-3xl">Welcome to the</h2>

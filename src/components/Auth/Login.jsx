@@ -11,12 +11,19 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const {role} = store();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const isLogin = await login(email, password);
+    
     setTimeout(() => {
-      isLogin && navigate("/");
+      if(role === "admin") {
+        isLogin && navigate("/admin/dashboard");
+      }
+      else {
+        isLogin && navigate("/dashboard");
+      }
     }, 3000);
   };
 
