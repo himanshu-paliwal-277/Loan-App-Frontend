@@ -1,5 +1,6 @@
-import { Navigate } from 'react-router-dom';
-import store from '../../store/state';
+// import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
+import store from "../../store/state";
 // import useAuthStore from './authStore';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
@@ -13,6 +14,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   if (requiredRole && role !== requiredRole) {
     return <Navigate to="/unauthorized" />;
   }
+  console.log("isAuthenticated: ", isAuthenticated, "role: ", role);
 
   return children;
 };

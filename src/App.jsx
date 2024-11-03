@@ -6,23 +6,10 @@ import Register from "./components/Auth/Register";
 import ProtectedRoute from "./components/ProtectedRoute/protectedRoute";
 import DashBoard from "./pages/Dashboard";
 import Layout from "./pages/Layout";
-import { useEffect } from "react";
-import store from "./store/state";
+import LoanForm from "./components/Loan/LoanForm";
+import LoanList from "./components/Loan/LoanList";
 
 function App() {
-   // Initialize isAuthenticated based on local storage
-   const {isAuthenticated, setIsAuthenticated} = store();
-   const { role, setRole } = store();
-
-   useEffect(() => {
-     const storedUser = localStorage.getItem("user");
-     if (storedUser) {
-      setIsAuthenticated(true);
-      setRole(JSON.parse(storedUser).role);
-     }
-     console.log("isAuthenticated: ", isAuthenticated);
-     console.log("role: ", role);
-   }, [role, isAuthenticated, setIsAuthenticated, setRole]);
 
   return (
     <>
@@ -30,20 +17,34 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin-register" element={<AdminRegister />} />
+        <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
 
         <Route path="/" element={<Layout />}>
           {/* Public Routes */}
           <Route index element={<Home />} />
-          <Route
-            path="/unauthorized"
-            element={<div>Unauthorized Access</div>}
-          />
           {/* Customer can access Dashboard */}
           <Route
             path="/dashboard"
             element={
               <ProtectedRoute requiredRole="customer">
                 <DashBoard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/request-new-loan"
+            element={
+              <ProtectedRoute requiredRole="customer">
+                <LoanForm />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/loans"
+            element={
+              <ProtectedRoute requiredRole="customer">
+                <LoanList />
               </ProtectedRoute>
             }
           />

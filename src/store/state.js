@@ -4,10 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const store = create((set) => ({
-  isAuthenticated: false,
-  setIsAuthenticated: (value) => set({ isAuthenticated: value }),
-  role: null, // "admin" or "customer"
-  setRole: (value) => set({ role: value }),
+  isAuthenticated: Boolean(localStorage.getItem("user")),
+  role: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).role : null, // "admin" or "customer"
   user: JSON.parse(localStorage.getItem("user")) || null,
   token: localStorage.getItem("token") || null,
 
@@ -86,6 +84,40 @@ const store = create((set) => ({
     localStorage.removeItem("user");
     delete axios.defaults.headers.common["Authorization"];
   },
+
+  // apply for loan (for customer)
+  applyForLoan: async function (amount, term) {
+    try {
+      const response = await axiosInstance.post("/api/loans/apply", {
+        amount,
+        term,
+      })
+
+      toast.success(response.data.message);
+      return true;
+    }
+    catch(error) {
+      console.error("Error applying for loan: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+      return false;
+    }
+  },
+
+  // view all loans (for customer)
+  fetchAllLoans: async function() {
+    try {
+      const response = await axiosInstance.get("/api/loans");
+      console.log("Loans: ", response.data);
+      toast.success(response.data.message);
+      return response.data;
+    }
+    catch(error) {
+      console.error("Error when fetching loans: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+    }
+  }
 }));
 
 export default store;

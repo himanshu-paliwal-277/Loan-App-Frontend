@@ -1,45 +1,71 @@
 import axios from "axios";
 
+// Function to check if the token is expired
+const isTokenExpired = (token) => {
+    if (!token) return true; // No token means expired or invalid
+
+    try {
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+        const expiry = payload.exp * 1000; // Convert expiration time to milliseconds
+        return Date.now() > expiry; // True if expired
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        return true; // Treat as expired if decoding fails
+    }
+};
+
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
 });
 
-// Add a request interceptor to include the token
+// Request Interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Retrieve the token from localStorage
         const token = localStorage.getItem("token");
+        console.log("config url: ", config.url);
+        // Skip expiration check for login route
+        if (config.url == "/api/auth/login") {
+            console.log("Skipping token expiration check for login route.");
+            return config;
+        }
 
-        // If token exists, add it to the Authorization header
+        // Check if the token is expired
+        if (isTokenExpired(token)) {
+            // Clear token and redirect to login if expired
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            window.location.href = "/login"; // Redirect to login
+            return Promise.reject(new Error("Token expired")); // Prevent request from going through
+        }
+
+        // If token is valid, add it to the Authorization header
         if (token) {
             config.headers["Authorization"] = `Bearer ${token}`;
         }
 
         return config;
     },
-    (error) => {
-        // Handle request errors
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
-// Add a response interceptor to handle invalid tokens
+// Response Interceptor
 axiosInstance.interceptors.response.use(
-    (response) => {
-        // If response is successful, return it as is
-        return response;
-    },
+    (response) => response,
     (error) => {
-        // Check if error response status is 401 (Unauthorized)
-        if (error.response && error.response.status === 401) {
-            // Token is invalid or expired - clear token and log out user
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
+        if (error.response) {
+            const status = error.response.status;
 
-            // Redirect to login page or show "not logged in" message
-            window.location.href = "/login"; // Adjust this path to your login page
+            if (status === 400 && error.response.data?.message === "Invalid token") {
+                console.error("Invalid token detected. Logging out.");
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/login";
+            } else if (status === 401) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "/login";
+            }
         }
-
         return Promise.reject(error);
     }
 );
