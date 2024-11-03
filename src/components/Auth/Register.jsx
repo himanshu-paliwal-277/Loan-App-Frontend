@@ -18,7 +18,7 @@ function Register() {
     const isRegister = await register(username, email, password);
     setTimeout(() => {
       isRegister && navigate("/login");
-    }, 3000);
+    }, 2200);
   };
 
   return (
@@ -71,7 +71,7 @@ function Register() {
           </p>
         </div>
       </div>
-      <ToastContainer  position="bottom-right" autoClose={2000} />
+      <ToastContainer  position="bottom-right" autoClose={1500} />
     </div>
   );
 }

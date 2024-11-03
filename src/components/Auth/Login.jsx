@@ -24,7 +24,7 @@ function Login() {
       else {
         isLogin && navigate("/dashboard");
       }
-    }, 3000);
+    }, 2200);
   };
 
   return (
@@ -70,7 +70,7 @@ function Login() {
           </p>
         </div>
       </div>
-      <ToastContainer  position="bottom-right" autoClose={2000} />
+      <ToastContainer  position="bottom-right" autoClose={1500} />
     </div>
   );
 }

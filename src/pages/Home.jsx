@@ -1,8 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Common/Footer";
+import store from '../store/state';
 
 function Home() {
   const navigate = useNavigate();
+  // const {role} = store();
+  const {role} = store();
+
+  function handleDashboardButtonClick() {
+    role === "admin" ? navigate("/admin/dashboard") : navigate("/dashboard");
+  }
   return (
     <>
       <div className="bg-gradient-to-t from-blue-400 to-orange-100">
@@ -11,7 +18,7 @@ function Home() {
             <h2 className="text-3xl">Welcome to the</h2>
             <h1 className="mb-4 text-6xl font-bold ">Mini Loan App</h1>
             <p className="">Easly Apply for Loan and Manage Installments</p>
-            <button className="px-4 py-2 mt-10 font-bold text-white bg-gray-300 rounded hover:bg-gray-500" onClick={() => navigate("/dashboard")}>
+            <button className="px-4 py-2 mt-10 font-bold text-white bg-gray-300 rounded hover:bg-gray-500" onClick={handleDashboardButtonClick}>
               DashBoard
             </button>
           </div>

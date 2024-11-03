@@ -11,6 +11,8 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/login" />;
   }
 
+  console.log("require role: ", requiredRole, "role: ", role);
+
   if (requiredRole && role !== requiredRole) {
     return <Navigate to="/unauthorized" />;
   }

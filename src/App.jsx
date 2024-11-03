@@ -8,9 +8,9 @@ import DashBoard from "./pages/Dashboard";
 import Layout from "./pages/Layout";
 import LoanForm from "./components/Loan/LoanForm";
 import LoanList from "./components/Loan/LoanList";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
-
   return (
     <>
       <Routes>
@@ -39,7 +39,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/loans"
             element={
@@ -49,15 +49,15 @@ function App() {
             }
           />
 
-          {/* Only Admin can access Admin Page */}
-          {/* <Route
-          path="/admin"
-          element={
-            <ProtectedRoute requiredRole="admin">
-              <AdminPage />
-            </ProtectedRoute>
-          }
-        /> */}
+          {/* Only Admin can access AdminDashboard Page */}
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </>

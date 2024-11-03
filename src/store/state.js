@@ -105,7 +105,7 @@ const store = create((set) => ({
   },
 
   // view all loans (for customer)
-  fetchAllLoans: async function() {
+  fetchUserLoans: async function() {
     try {
       const response = await axiosInstance.get("/api/loans");
       console.log("Loans: ", response.data);
@@ -117,7 +117,49 @@ const store = create((set) => ({
       const message = error.response?.data?.message || "Server Error";
       toast.error(message);
     }
-  }
+  },
+  
+  // view all users loans (for customer)
+  fetchAllUserLoansByAdmin: async function() {
+    try {
+      const response = await axiosInstance.get("/api/loans/allDetails");
+      toast.success(response.data.message);
+      return response.data;
+    }
+    catch(error) {
+      console.error("Error when fetching loans by admin: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+    }
+  },
+
+  // Approve loan (for admin)
+  approveLoan: async function (loanId) {
+    try {
+      const response = await axiosInstance.patch(`/api/loans/approve/${loanId}`);
+      toast.success(response.data.message);
+      return true;
+    } catch (error) {
+      console.error("Error approving loan: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+      return false;
+    }
+  },
+
+  // Reject loan (for admin)
+  rejectLoan: async function (loanId) {
+    try {
+      const response = await axiosInstance.patch(`/api/loans/reject/${loanId}`);
+      toast.success(response.data.message);
+      return true;
+    } catch (error) {
+      console.error("Error approving loan: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+      return false;
+    }
+  },
 }));
 
 export default store;
