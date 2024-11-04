@@ -32,7 +32,7 @@ function UserProfile() {
         contentStyle={{
           position: 'fixed',
           top: '90px',
-          right: '40px',
+          right: window.innerWidth <= 768 ? '20px' : '40px',
           transitionDuration: '10s',
         }}
       >

@@ -82,13 +82,13 @@ function RepaymentList() {
       )}
 
       {repayments?.length > 0 && (
-        <table className="w-[60%] mx-auto text-lg shadow-lg rounded-lg overflow-hidden">
+        <table className="sm:w-[60%] w-[100%] mx-auto sm:text-lg shadow-lg sm:rounded-lg overflow-hidden">
           <thead>
             <tr className="flex justify-between w-full py-4 text-white bg-green-500">
               {Object?.keys(repayments[0])
                 .filter((key) => key !== "loanId" && key !== "repaymentId")
                 .map((key) => (
-                  <th className="w-[20%] text-center overflow-hidden" key={key}>
+                  <th className={`${key === "s_no" ? "w-[13%] " : " w-[20%] "} text-center overflow-hidden`} key={key}>
                     {key.charAt(0).toUpperCase() + key.slice(1)}
                   </th>
                 ))}
@@ -101,7 +101,7 @@ function RepaymentList() {
                 className="flex items-center justify-between w-full py-3 border-b-2 border-gray-100"
                 key={repayment.s_no}
               >
-                <td className="w-[20%] overflow-hidden text-center">
+                <td className="sm:w-[20%] w-[13%] overflow-hidden text-center">
                   {repayment.s_no}.
                 </td>
                 <td className="w-[20%] text-center overflow-hidden">
@@ -127,7 +127,7 @@ function RepaymentList() {
                       className="px-3 text-white rounded font-semibold py-[3px] bg-green-500 hover:scale-105 active:scale-95 duration-100"
                       onClick={() => togglePopup(repayment.repaymentId)}
                     >
-                      Pay Now
+                      Pay <span className="hidden sm:block">Now</span>
                     </button>
                   )}
                   {repayment.status === "paid" && "Paid"}

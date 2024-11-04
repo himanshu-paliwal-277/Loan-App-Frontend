@@ -33,13 +33,13 @@ function RepaymentForm({
   return (
     <>
       <form
-        className="flex flex-col items-center px-12 py-10 bg-white shadow-lg border-gray-400 border-[3px] rounded-xl"
+        className="flex flex-col items-center sm:px-12 px-6 py-6 sm:py-10 bg-white shadow-lg border-gray-400 sm:border-[3px] border-[1px] rounded-xl"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <h1 className="mb-10 text-3xl font-semibold">
+        <h1 className="mb-10 text-xl font-semibold sm:text-3xl">
           Make Payment of {amount}$
         </h1>
-        <div className="w-full px-4">
+        <div className="w-full sm:px-4">
           {/* <h2 className="mb-3 text-lg">Payment Amount</h2> */}
           <TextField
             className=""
@@ -55,13 +55,13 @@ function RepaymentForm({
         </div>
         <div className="flex flex-col gap-2 w-[50%] mt-12 ">
           <button
-            className="px-4 py-2 text-lg font-semibold text-white bg-green-500 rounded hover:bg-green-600 active:bg-green-700"
+            className="px-4 py-2 font-semibold text-white bg-green-500 rounded sm:text-lg hover:bg-green-600 active:bg-green-700"
             type="submit"
           >
             Pay
           </button>
           <button
-            className="px-4 py-2 font-semibold rounded hover:bg-gray-100 active:bg-gray-200"
+            className="px-4 py-2 text-sm font-semibold rounded hover:bg-gray-100 active:bg-gray-200 sm:text-lg"
             onClick={() => setIsOpen(false)}
           >
             Cencel

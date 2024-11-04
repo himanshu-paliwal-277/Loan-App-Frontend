@@ -62,10 +62,11 @@ function LoanForm() {
   }
 
   return (
-    <>
-      <div className="flex w-full duration-500 justify-evenly">
-        <div className="sm:w-[40%] w-[60%] mt-8 py-8 px-12 border-2 shadow-lg border-gray-200 rounded-lg">
-          <h1 className="mb-4 text-3xl font-semibold text-center">Loan Form</h1>
+    // 
+    <> 
+      <div className="flex flex-col items-center w-full duration-500 sm:flex-row sm:justify-evenly">
+        <div className="sm:w-[30%] w-[95%] mt-8 py-8 px-12 border-2 shadow-lg border-gray-200 rounded-lg">
+          <h1 className="mb-6 text-3xl font-semibold text-center">Loan Form</h1>
           <form className="flex flex-col gap-4" onSubmit={onSubmitHandler}>
             <TextField
               value={amount}

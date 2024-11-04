@@ -62,14 +62,14 @@ function LoanList() {
       {isError && <p className="text-5xl text-center">Error</p>}
       {/* {loans.length === 0 && <p className="text-5xl text-center">No Loans</p>} */}
       {loans?.length > 0 && (
-        <table className="w-[60%] mx-auto text-lg shadow-lg rounded-lg overflow-hidden">
+        <table className="sm:w-[60%] w-[100%] mx-auto sm:text-lg shadow-lg sm:rounded-lg overflow-hidden">
           <thead>
             <tr className="flex justify-between w-full py-4 text-white bg-green-500">
               {Object?.keys(loans[0])
                 .filter((key) => key !== "loanId")
                 .map((key) => (
                   <th
-                    className="w-[20%]  text-center overflow-hidden "
+                    className={`${key == "s_no" ? "w-[13%] " : " w-[20%] "}  text-center overflow-hidden`}
                     key={key}
                   >
                     {key.charAt(0).toUpperCase() + key.slice(1)}
@@ -84,7 +84,7 @@ function LoanList() {
                 className={`flex justify-between items-center w-full py-3 border-b-2 border-gray-100`}
                 key={loan.s_no}
               >
-                <td className="w-[20%] overflow-hidden text-center">
+                <td className="sm:w-[20%] w-[13%] overflow-hidden text-center">
                   {loan.s_no}.
                 </td>
                 <td className="w-[20%] text-center overflow-hidden">
