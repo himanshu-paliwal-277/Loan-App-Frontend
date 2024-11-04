@@ -28,13 +28,13 @@ function LoanForm() {
 
   function termsChangeHandler(event) {
     const value = event.target.value;
-    setTerms(value < 0 ? 0 : value);
+    setTerms(value < 0 ? 1 : value);
     setInstallments([]); 
   }
 
   function amountChangeHandler(event) {
     const value = event.target.value;
-    setAmount(value < 0 ? 0 : value); 
+    setAmount(value < 0 ? 1 : value); 
     setInstallments([]); 
   }
 
@@ -75,6 +75,15 @@ function LoanForm() {
               onChange={amountChangeHandler}
               required
               type="number"
+              inputProps={{
+                min: 1, // Set the minimum value here
+                step: 1, // Optional: Set step value to prevent non-integer values
+              }}
+              onBlur={() => {
+                if (amount < 1) {
+                  alert(`The minimum amount required is ${1}`);
+                }
+              }}
             />
             <TextField
               value={terms}
@@ -84,6 +93,10 @@ function LoanForm() {
               onChange={termsChangeHandler}
               required
               type="number"
+              inputProps={{
+                min: 1, // Set the minimum value here
+                step: 1, // Optional: Set step value to prevent non-integer values
+              }}
             />
             <button
               type="button"

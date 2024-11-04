@@ -28,6 +28,10 @@ axiosInstance.interceptors.request.use(
             console.log("Skipping token expiration check for login route.");
             return config;
         }
+        if (config.url == "/api/auth/register" || config.url == "/api/auth/register-admin") {
+            console.log("Skipping token expiration check for register route.");
+            return config;
+        }
 
         // Check if the token is expired
         if (isTokenExpired(token)) {
@@ -35,6 +39,7 @@ axiosInstance.interceptors.request.use(
             localStorage.removeItem("token");
             localStorage.removeItem("user");
             window.location.href = "/login"; // Redirect to login
+            console.log("Token expired. Redirecting to login.");
             return Promise.reject(new Error("Token expired")); // Prevent request from going through
         }
 

@@ -160,6 +160,40 @@ const store = create((set) => ({
       return false;
     }
   },
+
+  // get all repayment of loan (for customer)
+  getRepayments: async function (loanId) {
+    try {
+      const response = await axiosInstance.get(`/api/repayments/${loanId}`);
+      toast.success(response.data.message);
+      return response.data;
+    } catch (error) {
+      console.error("Error in fetching repayments: ", error);
+      const message = error.response?.data?.message || "Server Error";
+      toast.error(message);
+    }
+  },
+
+  // make repayment (for customer)
+  makeRepayment: async function(amount, repaymentId) {
+  try {
+    const response = await axiosInstance.post(`/api/repayments/make`, {
+      amount,
+      repaymentId,
+    });
+    toast.success(response.data.message);
+    return true;
+  } catch (error) {
+    console.error("Error making repayment: ", error);
+    const message = error.response?.data?.message || "Server Error";
+    toast.error(message);
+    return false;
+  }
+}
+
+  
 }));
+
+
 
 export default store;

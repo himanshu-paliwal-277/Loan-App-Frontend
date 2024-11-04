@@ -9,20 +9,21 @@ import Layout from "./pages/Layout";
 import LoanForm from "./components/Loan/LoanForm";
 import LoanList from "./components/Loan/LoanList";
 import AdminDashboard from "./pages/AdminDashboard";
+import PayLoan from "./components/Loan/PayLoan";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin-register" element={<AdminRegister />} />
         <Route path="/unauthorized" element={<h1>Unauthorized</h1>} />
 
         <Route path="/" element={<Layout />}>
-          {/* Public Routes */}
           <Route index element={<Home />} />
-          {/* Customer can access Dashboard */}
+          {/* Customer Routes */}
           <Route
             path="/dashboard"
             element={
@@ -48,8 +49,16 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/loan/payment/:loanId"
+            element={
+              <ProtectedRoute requiredRole="customer">
+                <PayLoan />
+              </ProtectedRoute>
+            }
+          />
 
-          {/* Only Admin can access AdminDashboard Page */}
+          {/* Admin Routes */}
           <Route
             path="/admin/dashboard"
             element={

@@ -18,6 +18,7 @@ function AdminRegister() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     const isAdminRegister =await adminRegister(username, email, password, secretKey);
+    console.log("isAdminRegister: ", isAdminRegister);
     setTimeout(() => {
       isAdminRegister && navigate("/login");
     }, 3000);

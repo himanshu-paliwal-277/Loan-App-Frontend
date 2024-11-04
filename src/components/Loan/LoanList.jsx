@@ -1,55 +1,80 @@
-import { useEffect, useState } from "react";
 import store from "../../store/state";
 import { ToastContainer } from "react-toastify";
-// import Popup from "reactjs-popup";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+import PulseLoader from "react-spinners/PulseLoader";
 
 function LoanList() {
   const { fetchUserLoans } = store();
-  const [loans, setLoans] = useState([]);
   const { user } = store();
-  // const [isOpen, setIsOpen] = useState(false);
-
-  // const togglePopup = () => {
-  //   setIsOpen(!isOpen);
-  // };
+  const navigate = useNavigate();
 
   async function fetchLoans() {
     try {
       const data = await fetchUserLoans();
       console.log(data);
-      const loans = data.loans.map(({ amount, term, status }, index) => ({
+      const loans = data.loans.map(({ amount, term, status, _id }, index) => ({
         s_no: index + 1,
         amount,
         term,
         status,
+        loanId: _id,
       }));
       console.log(loans);
-      setLoans(loans);
+      // setLoans(loans);
+      return loans;
     } catch (error) {
       console.error("Error fetching loans:", error);
+      return error;
     }
   }
 
-  useEffect(() => {
-    fetchLoans();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  function handleLoanPay(loanId) {
+    navigate(`/loan/payment/${loanId}`);
+  }
+
+  const {
+    data: loans,
+    isLoading,
+    isError,
+  } = useQuery("loans", fetchLoans, {
+    cacheTime: 60 * 1000,
+    staleTime: 60 * 1000,
+    refetchInterval: 10000,
+  });
 
   return (
     <>
       <h1 className="my-5 text-3xl font-semibold text-center">
         {user.name} Loans
       </h1>
-      {loans.length === 0 && <p>No Loans</p>}
-      {loans.length > 0 && (
+      {isLoading && (
+        <div className="flex justify-center w-full pt-10">
+          <PulseLoader
+            color={"#39d9b9"}
+            loading={true}
+            size={15}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )}
+      {isError && <p className="text-5xl text-center">Error</p>}
+      {/* {loans.length === 0 && <p className="text-5xl text-center">No Loans</p>} */}
+      {loans?.length > 0 && (
         <table className="w-[60%] mx-auto text-lg shadow-lg rounded-lg overflow-hidden">
           <thead>
             <tr className="flex justify-between w-full py-4 text-white bg-green-500">
-              {Object?.keys(loans[0]).map((key) => (
-                <th className="w-[20%]  text-center overflow-hidden " key={key}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </th>
-              ))}
+              {Object?.keys(loans[0])
+                .filter((key) => key !== "loanId")
+                .map((key) => (
+                  <th
+                    className="w-[20%]  text-center overflow-hidden "
+                    key={key}
+                  >
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </th>
+                ))}
               <th className="w-[20%]  text-center overflow-hidden ">Action</th>
             </tr>
           </thead>
@@ -83,6 +108,7 @@ function LoanList() {
                   {loan.status === "approved" && (
                     <button
                       className={`px-3 text-white rounded font-semibold py-[3px] bg-green-500 hover:scale-105 active:scale-95 duration-100`}
+                      onClick={() => handleLoanPay(loan.loanId)}
                     >
                       pay
                     </button>
@@ -97,20 +123,6 @@ function LoanList() {
         </table>
       )}
       <ToastContainer position="bottom-right" autoClose={2000} />
-      {/* <Popup
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        position="right center"
-        closeOnDocumentClick
-        overlayStyle={{ background: "#00000000" }}
-        contentStyle={{
-          transitionDuration: "20s",
-        }}
-      >
-        <div className="flex flex-col items-center px-12 py-10 text-white bg-black shadow-xl rounded-xl">
-          done
-        </div>
-      </Popup> */}
     </>
   );
 }

@@ -23,7 +23,9 @@
     "react": "^18.3.1",
     "react-avatar": "^5.0.3",
     "react-dom": "^18.3.1",
+    "react-query": "^3.39.3",
     "react-router-dom": "^6.27.0",
+    "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.6",
     "reactjs-popup": "^2.0.6",
     "zustand": "^5.0.1"

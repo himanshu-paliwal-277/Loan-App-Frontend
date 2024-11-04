@@ -9,7 +9,7 @@ function ViewInstallments({ Installments }) {
           <li className="flex justify-between w-full" key={installment.week}>
             <span>Week {installment.week}</span>
             <span>{installment.date}</span>
-            <span>Amount: {installment.amount}</span>
+            <span>Amount: {installment.amount}$</span>
           </li>
         ))}
       </ul>

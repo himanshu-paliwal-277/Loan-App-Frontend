@@ -1,7 +1,10 @@
+import RepaymentList from "../Repayments/RepaymentList";
+
 function PayLoan() {
     return (
         <>
-            <h1>PayLoan</h1>
+            <h1 className="my-6 text-3xl font-bold text-center">Pay Loan</h1>
+            <RepaymentList />
         </>
     )
 }

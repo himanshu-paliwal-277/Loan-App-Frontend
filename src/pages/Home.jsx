@@ -18,15 +18,10 @@ function Home() {
             <h2 className="text-3xl">Welcome to the</h2>
             <h1 className="mb-4 text-6xl font-bold ">Mini Loan App</h1>
             <p className="">Easly Apply for Loan and Manage Installments</p>
-            <button className="px-4 py-2 mt-10 font-bold text-white bg-gray-300 rounded hover:bg-gray-500" onClick={handleDashboardButtonClick}>
+            <button className="px-4 py-2 mt-10 font-bold text-white bg-gray-500 rounded hover:bg-gray-600" onClick={handleDashboardButtonClick}>
               DashBoard
             </button>
           </div>
-        </div>
-        <div className="flex gap-4">
-          <button className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-500" onClick={() => navigate("/login")}>Login</button>
-          <button className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-500" onClick={() => navigate("/register")}>Register</button>
-          <button className="px-4 py-2 bg-gray-300 rounded cursor-pointer hover:bg-gray-500" onClick={() => navigate("/admin-register")}>Register Admin</button>
         </div>
         <Footer />
       </div>

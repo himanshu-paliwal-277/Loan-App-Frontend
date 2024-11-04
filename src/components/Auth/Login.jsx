@@ -16,15 +16,17 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const isLogin = await login(email, password);
-    
+    console.log("login as : ", role);
+
     setTimeout(() => {
-      if(role === "admin") {
-        isLogin && navigate("/admin/dashboard");
-      }
-      else {
-        isLogin && navigate("/dashboard");
-      }
-    }, 2200);
+      // if(role === "admin") {
+      //   isLogin && navigate("/admin/dashboard");
+      // }
+      // else {
+      //   isLogin && navigate("/dashboard");
+      // }
+      isLogin && navigate("/");
+    }, 2000);
   };
 
   return (

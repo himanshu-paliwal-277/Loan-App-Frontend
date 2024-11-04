@@ -1,41 +1,50 @@
-import { useEffect, useState } from "react";
 import store from "../store/state";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import { useQuery } from "react-query";
+import PulseLoader from "react-spinners/PulseLoader";
 
 function AdminDashboard() {
   const { fetchAllUserLoansByAdmin } = store();
-  const [loans, setLoans] = useState([]);
   const { approveLoan, rejectLoan } = store();
 
   async function fetchAllLoans() {
     try {
       const data = await fetchAllUserLoansByAdmin();
       console.log("fetchAllUserLoansByAdmin data: ", data);
-      setLoans(data.loans);
+      // setLoans(data.loans);
+      return data.loans;
     } catch (error) {
       console.error("Error fetching loans:", error);
+      return error;
     }
   }
 
-  useEffect(() => {
-    fetchAllLoans();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const {
+    data: loans,
+    isLoading,
+    isError,
+    refetch: refetchAllLoans,
+  } = useQuery("fetchAllLoans", fetchAllLoans, {
+    cacheTime: 60 * 1000,
+    staleTime: 60 * 1000,
+    refetchInterval: 10000,
+    onError: (error) => toast.error(error.message),
+  });
 
   async function handleApprove(loanId) {
     const isApproved = await approveLoan(loanId);
     if (isApproved) {
       console.log("Approve loan id : ", loanId);
-      fetchAllLoans();
+      refetchAllLoans();
     }
     // approveLoan
   }
-  
+
   async function handleReject(loanId) {
     const isRejected = await rejectLoan(loanId);
     if (isRejected) {
       console.log("Rejected loan id : ", loanId);
-      fetchAllLoans();
+      refetchAllLoans();
     }
     // approveLoan
   }
@@ -44,8 +53,20 @@ function AdminDashboard() {
     <>
       {/* <h1>Admin Dashboard</h1> */}
       <h1 className="my-5 text-3xl font-semibold text-center">Loan Requests</h1>
-      {loans.length === 0 && <p>No Loans</p>}
-      {loans.length > 0 && (
+      {isLoading && (
+        <div className="flex justify-center w-full pt-10">
+          <PulseLoader
+            color={"#39d9b9"}
+            loading={true}
+            size={15}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      )}
+      {isError && <p className="text-5xl text-center">Error</p>}
+      {loans?.length === 0 && <p>No Loans</p>}
+      {loans?.length > 0 && (
         <table className="w-[90%] mx-auto text-lg shadow-lg rounded-lg overflow-hidden ">
           <thead>
             <tr className="flex justify-between w-full py-4 text-white bg-green-500">
@@ -103,11 +124,15 @@ function AdminDashboard() {
                         Approve
                       </button>
                       <button
-                        className={`px-2 text-white rounded font-semibold py-[2px] bg-red-500 hover:bg-red-600 active:bg-red-700`} onClick={() => handleReject(loan.loanId)}                      >
+                        className={`px-2 text-white rounded font-semibold py-[2px] bg-red-500 hover:bg-red-600 active:bg-red-700`}
+                        onClick={() => handleReject(loan.loanId)}
+                      >
                         Reject
                       </button>
                     </div>
-                  ) : <span className="font-semibold">Done</span>}
+                  ) : (
+                    <span className="font-semibold">Done</span>
+                  )}
                 </td>
               </tr>
             ))}
