@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Login from "./components/Auth/Login";
 import AdminRegister from "./components/Auth/AdminRegister";
 import Register from "./components/Auth/Register";
-import ProtectedRoute from "./components/ProtectedRoute/protectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import DashBoard from "./pages/Dashboard";
 import Layout from "./pages/Layout";
 import LoanForm from "./components/Loan/LoanForm";
