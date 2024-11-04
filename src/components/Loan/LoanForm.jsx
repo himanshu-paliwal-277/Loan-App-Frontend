@@ -79,11 +79,6 @@ function LoanForm() {
                 min: 1, // Set the minimum value here
                 step: 1, // Optional: Set step value to prevent non-integer values
               }}
-              onBlur={() => {
-                if (amount < 1) {
-                  alert(`The minimum amount required is ${1}`);
-                }
-              }}
             />
             <TextField
               value={terms}
